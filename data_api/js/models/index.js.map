@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../src/models/",
+  "sources": [
+    "index.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA,IAAA;;AAAA,gBAAA,GAAmB,OAAA,CAAQ,mBAAR;;AACnB,MAAM,CAAC,OAAP,GAAiB,gBAAA,CAAiB,MAAjB;;AADjB",
+  "sourcesContent": [
+    "requireDirectory = require('require-directory')\nmodule.exports = requireDirectory(module)\n\n#::: End Program :::"
+  ]
+}

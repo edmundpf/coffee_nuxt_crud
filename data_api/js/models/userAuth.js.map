@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "userAuth.js",
+  "sourceRoot": "../../src/models/",
+  "sources": [
+    "userAuth.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA,IAAA,aAAA,EAAA,KAAA,EAAA,QAAA,EAAA;;AAAA,QAAA,GAAW,OAAA,CAAQ,UAAR;;AACX,aAAA,GAAgB,OAAA,CAAQ,mBAAR,CAAA,CAA6B,QAA7B;;AAChB,KAAA,GAAQ,OAAA,CAAQ,sBAAR,EAFR;;;AAMA,QAAA,GAAW,IAAK,QAAQ,CAAC,MAAd,CAAsB;EAChC,QAAA,EACC;IAAA,IAAA,EAAM,MAAN;IACA,MAAA,EAAQ,IADR;IAEA,QAAA,EAAU;EAFV,CAF+B;EAKhC,QAAA,EACC;IAAA,IAAA,EAAM,MAAN;IACA,MAAA,EAAQ,IADR;IAEA,QAAA,EAAU;EAFV;AAN+B,CAAtB,EAUX;EACC,UAAA,EAAY,WADb;EAEC,UAAA,EAAY;AAFb,CAVW,EANX;;;AAuBA,QAAQ,CAAC,GAAT,CAAa,MAAb,EAAqB,MAAA,QAAA,CAAA,CAAA;EACpB,MAAM,KAAK,CAAC,WAAN,CAAkB,IAAlB,EAAwB,UAAxB;AADc,CAArB,EAvBA;;;AA6BA,QAAQ,CAAC,GAAT,CAAa,WAAb,EAA0B,MAAA,QAAA,CAAA,CAAA;EACzB,MAAM,KAAK,CAAC,aAAN,CAAoB,IAAC,CAAA,SAAD,CAAA,CAApB,EAAkC,UAAlC;AADmB,CAA1B,EA7BA;;;AAmCA,QAAQ,CAAC,MAAT,CAAgB,aAAhB,EACC;EAAA,EAAA,EAAI,eAAJ;EACA,SAAA,EAAW;AADX,CADD,EAnCA;;;AAyCA,MAAM,CAAC,OAAP,GAAiB,QAAQ,CAAC,KAAT,CAAe,UAAf,EAA2B,QAA3B;;AAzCjB",
+  "sourcesContent": [
+    "mongoose = require('mongoose')\nautoIncrement = require('mongoose-sequence')(mongoose)\nhooks = require('../utils/model-hooks')\n\n#: Schema\n\nuserAuth = new (mongoose.Schema)({\n\tusername:\n\t\ttype: String\n\t\tunique: true\n\t\trequired: true\n\tpassword:\n\t\ttype: String\n\t\tunique: true\n\t\trequired: true\n},\n{\n\tcollection: 'user_auth'\n\ttimestamps: true\n})\n\n#: Pre-Save Hook\n\nuserAuth.pre 'save', ->\n\tawait hooks.saveEncrypt this, 'password'\n\treturn\n\n#: Pre-Update-One Hook\n\nuserAuth.pre 'updateOne', ->\n\tawait hooks.updateEncrypt @getUpdate(), 'password'\n\treturn\n\n#: Auto-Increment\n\nuserAuth.plugin autoIncrement,\n\tid: 'user_auth_uid'\n\tinc_field: 'uid'\n\n#: Exports\n\nmodule.exports = mongoose.model('UserAuth', userAuth)\n\n#::: End Program :::"
+  ]
+}

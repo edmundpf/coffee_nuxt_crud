@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "file": "customer.js",
+  "sourceRoot": "../../src/models/",
+  "sources": [
+    "customer.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA,IAAA,aAAA,EAAA,QAAA,EAAA,UAAA,EAAA;;AAAA,QAAA,GAAW,OAAA,CAAQ,UAAR;;AACX,aAAA,GAAgB,OAAA,CAAQ,mBAAR,CAAA,CAA6B,QAA7B;;AAChB,UAAA,GAAa,OAAA,CAAQ,sBAAR,CAA+B,CAAC,WAF7C;;;AAMA,QAAA,GAAW,IAAK,QAAQ,CAAC,MAAd,CAAsB;EAChC,KAAA,EACC;IAAA,IAAA,EAAM,MAAN;IACA,MAAA,EAAQ,IADR;IAEA,QAAA,EAAU;EAFV,CAF+B;EAKhC,UAAA,EACC;IAAA,IAAA,EAAM,MAAN;IACA,QAAA,EAAU;EADV,CAN+B;EAQhC,SAAA,EACC;IAAA,IAAA,EAAM,MAAN;IACA,QAAA,EAAU;EADV,CAT+B;EAWhC,kBAAA,EAAoB;IACnB;MAAA,IAAA,EAAM;IAAN,CADmB;;AAXY,CAAtB,EAeX;EACC,UAAA,EAAY,WADb;EAEC,UAAA,EAAY,IAFb;EAGC,WAAA,EAAa;AAHd,CAfW,EANX;;;AA6BA,QAAQ,CAAC,GAAT,CAAa,MAAb,EAAqB,MAAA,QAAA,CAAA,CAAA;EACpB,MAAM,UAAA,CAAW,IAAX,EAAiB,CAAE,oBAAF,CAAjB;AADc,CAArB,EA7BA;;;AAmCA,QAAQ,CAAC,MAAT,CAAgB,aAAhB,EACC;EAAA,EAAA,EAAI,cAAJ;EACA,SAAA,EAAW;AADX,CADD,EAnCA;;;AAyCA,MAAM,CAAC,OAAP,GAAiB,QAAQ,CAAC,KAAT,CAAe,UAAf,EAA2B,QAA3B;;AAzCjB",
+  "sourcesContent": [
+    "mongoose = require('mongoose')\nautoIncrement = require('mongoose-sequence')(mongoose)\nlistCreate = require('../utils/model-hooks').listCreate\n\n#: Schema\n\ncustomer = new (mongoose.Schema)({\n\temail:\n\t\ttype: String\n\t\tunique: true\n\t\trequired: true\n\tfirst_name:\n\t\ttype: String\n\t\trequired: true\n\tlast_name:\n\t\ttype: String\n\t\trequired: true\n\tproducts_purchased: [\n\t\ttype: String\n\t]\n},\n{\n\tcollection: 'customers'\n\ttimestamps: true\n\tusePushEach: true\n})\n\n#: Pre-Save Hook\n\ncustomer.pre 'save', ->\n\tawait listCreate this, [ 'products_purchased' ]\n\treturn\n\n#: Auto Increment\n\ncustomer.plugin autoIncrement,\n\tid: 'customer_uid'\n\tinc_field: 'uid'\n\n#: Exports\n\nmodule.exports = mongoose.model('Customer', customer)\n\n#::: End Program :::"
+  ]
+}
