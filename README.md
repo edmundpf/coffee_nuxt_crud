@@ -2,7 +2,7 @@
 <img src="/assets/misc/crud.gif?raw=true"></img>
 > Automatic Express API and CRUD web app for your MongoDB collections. Just add your schema to the *data_api/src/models* folder and run the included setup script to customize your configuration and add your admin credentials. All API endpoints and web app pages are protected by JSON Web Token authentification automatically.
 ## Original Source
-* This is a fork of my own JS repo re-written with Coffeescript and Pug-templating. It includes grunt build scripts to automatically compile to JS.
+* This is a clone of my own JS repo re-written with Coffeescript and Pug-templating. It includes grunt build scripts to automatically compile to JS and some new features.
 * [Nuxt Express JWT CRUD - Javascript](https://github.com/edmundpf/nuxt_express_jwt_crud)
 ## Pre-Requisites
 * Coffeescript (global)
