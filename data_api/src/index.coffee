@@ -2,6 +2,7 @@ express = require('express')
 mongoose = require('mongoose')
 cors = require('cors')
 bcrypt = require('bcrypt')
+p = require('print-tools-js')
 
 userAuth = require('./utils/config-wrapper').userAuth
 secretKey = require('./utils/config-wrapper').secretKey
@@ -46,7 +47,11 @@ app.use(cors(
 	exposedHeaders: [ 'X-Access-Token' ],
 ))
 
-app.listen(serverPort, => console.log "Listening on port #{serverPort}")
+app.listen(serverPort, => p.titleBox(
+	'Data API Server'
+	titleDesc: "Running on port #{serverPort}"
+	tagLine: "Connected to Mongo database: #{databaseName} on port #{mongoosePort}"
+))
 
 #: All Routes
 
@@ -128,7 +133,10 @@ app.all("/:path(#{Object.keys(list_routes).join('|')})/:method(#{list_methods.jo
 			update_dict = {};
 			for key of req.query
 				if ![primary_key, 'auth_token', 'refresh_token'].includes key
-					update_dict[key] = $each: req.query[key].split(',')
+					if req.params.method != 'set'
+						update_dict[key] = $each: req.query[key].split(',')
+					else
+						update_dict[key] = req.query[key].split(',')
 
 			#: Push
 

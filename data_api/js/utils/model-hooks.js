@@ -6,15 +6,15 @@ SALT_WORK_FACTOR = 10;
 
 //: Pre-Save hook to save CSV lists for array fields
 listCreate = function(doc, fields) {
-  var error, i, j, key, len, len1, val, vals, value;
+  var error, field, i, j, len, len1, val, vals;
   try {
-    for (value = i = 0, len = fields.length; i < len; value = ++i) {
-      key = fields[value];
-      vals = value.split(',');
-      doc[key] = [];
+    for (i = 0, len = fields.length; i < len; i++) {
+      field = fields[i];
+      vals = doc[field][0].split(',');
+      doc[field] = [];
       for (j = 0, len1 = vals.length; j < len1; j++) {
         val = vals[j];
-        doc[key].push(val);
+        doc[field].push(val);
       }
     }
   } catch (error1) {

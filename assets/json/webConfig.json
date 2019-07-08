@@ -1,5 +1,11 @@
 {
   "port": 3000,
   "site_title": "Nuxt Coffee Crud",
-  "site_desc": "Nuxt Express JWT CRUD"
+  "site_desc": "Nuxt Express JWT CRUD",
+  "hidden_fields": [
+    "_id",
+    "uid",
+    "__v"
+  ],
+  "hide_password_fields": true
 }

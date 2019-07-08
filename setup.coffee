@@ -3,7 +3,7 @@ jsonfile = require('jsonfile')
 editJson = require('edit-json-file')
 snakeCase = require('lodash').snakeCase
 request = require('request-promise')
-models = require('./data_api/models')
+models = require('./data_api/src/models')
 mongoose = require('mongoose')
 packageConfig = require('./package.json')
 webConfig = require('./assets/json/webConfig.json')
@@ -137,6 +137,20 @@ configApp = () ->
 			name: 'web_site_desc',
 			message: 'Enter website description:',
 			default: webConfig.site_desc,
+		},
+		{
+			type: 'input',
+			name: 'web_hidden_fields',
+			message: 'Enter field names to hide in the web app (comma-separated):',
+			filter: getList,
+			default: webConfig.hidden_fields.join(','),
+		},
+		{
+			type: 'input',
+			name: 'web_hide_password_fields',
+			message: 'Hide text of fields named "password" in the web app?:',
+			filter: getBoolean,
+			default: webConfig.hide_password_fields,
 		},
 	])
 
@@ -347,6 +361,7 @@ createAdmin = () ->
 						protectedMessage()
 		else
 			print('Could not create admin account.', 'danger')
+			console.log(err)
 		return await tryAgain(createAdmin)
 
 #: Admin Account Routine
@@ -633,6 +648,19 @@ notEmpty = (text) ->
 
 getNumber = (text) ->
 	return Number(text)
+
+#: Convert comma-separated string to list
+
+getList = (text) ->
+	return text.split(',')
+
+#: Convert string to boolean
+
+getBoolean = (text) ->
+	if text == 'true'
+		return true
+	else
+		return false
 
 #: Get author name
 

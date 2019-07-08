@@ -1,5 +1,5 @@
 <template lang="pug">
-	loginform
+	loginForm
 </template>
 
 <script lang="coffee">

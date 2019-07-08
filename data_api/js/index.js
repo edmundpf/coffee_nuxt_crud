@@ -1,4 +1,4 @@
-var allowedPassword, app, app_routes, bcrypt, cors, corsPort, databaseName, db, express, incorrectSecretKey, incorrectUserOrPass, list_methods, list_routes, mongoose, mongoosePort, noCurrentPass, normal_methods, normal_routes, objOmit, responseFormat, route_methods, schemaAsync, secretKey, serverPort, signToken, updateQuery, userAuth, userNotFound, verifyToken;
+var allowedPassword, app, app_routes, bcrypt, cors, corsPort, databaseName, db, express, incorrectSecretKey, incorrectUserOrPass, list_methods, list_routes, mongoose, mongoosePort, noCurrentPass, normal_methods, normal_routes, objOmit, p, responseFormat, route_methods, schemaAsync, secretKey, serverPort, signToken, updateQuery, userAuth, userNotFound, verifyToken;
 
 express = require('express');
 
@@ -7,6 +7,8 @@ mongoose = require('mongoose');
 cors = require('cors');
 
 bcrypt = require('bcrypt');
+
+p = require('print-tools-js');
 
 userAuth = require('./utils/config-wrapper').userAuth;
 
@@ -70,7 +72,10 @@ app.use(cors({
 }));
 
 app.listen(serverPort, () => {
-  return console.log(`Listening on port ${serverPort}`);
+  return p.titleBox('Data API Server', {
+    titleDesc: `Running on port ${serverPort}`,
+    tagLine: `Connected to Mongo database: ${databaseName} on port ${mongoosePort}`
+  });
 });
 
 //: All Routes
@@ -143,9 +148,13 @@ app.all(`/:path(${Object.keys(list_routes).join('|')})/:method(${list_methods.jo
     update_dict = {};
     for (key in req.query) {
       if (![primary_key, 'auth_token', 'refresh_token'].includes(key)) {
-        update_dict[key] = {
-          $each: req.query[key].split(',')
-        };
+        if (req.params.method !== 'set') {
+          update_dict[key] = {
+            $each: req.query[key].split(',')
+          };
+        } else {
+          update_dict[key] = req.query[key].split(',');
+        }
       }
     }
     //: Push

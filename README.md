@@ -1,12 +1,17 @@
 # Nuxt/Express/MongoDB/JWT Admin CRUD Boilerplate
 <img src="/assets/misc/crud.gif?raw=true"></img>
-> Automatic Express API and CRUD web app for your MongoDB collections. Just add your schema to the *data_api/models* folder and run the included setup script to customize your configuration and add your admin credentials. All API endpoints and web app pages are protected by JSON Web Token authentification automatically.
+> Automatic Express API and CRUD web app for your MongoDB collections. Just add your schema to the *data_api/src/models* folder and run the included setup script to customize your configuration and add your admin credentials. All API endpoints and web app pages are protected by JSON Web Token authentification automatically.
+## Original Source
+* This is a fork of my own JS repo re-written with Coffeescript and Pug-templating. It includes grunt build scripts to automatically compile to JS.
+* [Nuxt Express JWT CRUD - Javascript]https://github.com/edmundpf/nuxt_express_jwt_crud
+## Pre-Requisites
+* Coffeescript (global)
+* Grunt (global)
 ## Setup
 * Install
 	``` bash
 	# Clone the repo
-	$ git clone git@github.com:edmundpf/nuxt_express_jwt.git
-
+	$ git clone git@github.com:edmundpf/coffee_nuxt_crud.git
 	# Install the dependencies
 	$ npm install
 	```
@@ -15,9 +20,9 @@
 * Using the CLI
 	``` bash
 	# First you'll need to start your API server
-	$ node data_api/index.js
+	$ npm run server
 	# Start the setup script
-	$ node setup.js
+	$ npm run setup
 	```
 	* **NOTE:** your mongoDB server will need to be running to use the API, CLI, and web app
 	* You'll need to set up a secret key to create an admin user
@@ -39,7 +44,6 @@
 	``` bash
 	# Launch dev instance
 	$ npm run dev
-
 	# Run in production mode
 	$ npm build
 	$ npm start

@@ -19,7 +19,7 @@
 					b-nav-form
 						b-button.nav-button(v-b-modal.logout-modal='')
 							| Logout
-		logoutmodal
+		logoutModal
 </template>
 
 <script lang="coffee">

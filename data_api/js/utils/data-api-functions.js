@@ -118,11 +118,15 @@ allowedPassword = function(req, res) {
     error_msg += 'Username must be at least 8 characters. ';
     error_codes.push('USER_LENGTH');
   }
+  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.query.username)) {
+    error_msg += 'Username must be valid email. ';
+    error_codes.push('VALID_EMAIL');
+  }
   if (req.query.password.length < 8) {
     error_msg += 'Password must be at least 8 characters. ';
     error_codes.push('PASS_LENGTH');
   }
-  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(req.query.password)) {
+  if (!/(?=.*[A-Za-z])(?=.*[0-9])/.test(req.query.password)) {
     error_msg += 'Password must have at least 1 letter and at least 1 character. ';
     error_codes.push('PASS_CHAR');
   }

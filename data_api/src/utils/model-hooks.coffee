@@ -5,11 +5,11 @@ SALT_WORK_FACTOR = 10
 
 listCreate = (doc, fields) ->
 	try
-		for key, value in fields
-			vals = value.split ','
-			doc[key] = []
+		for field in fields
+			vals = doc[field][0].split(',')
+			doc[field] = []
 			for val in vals
-				doc[key].push val
+				doc[field].push(val)
 	catch error
 		return Promise.resolve
 			message: 'Could not set array field value.'

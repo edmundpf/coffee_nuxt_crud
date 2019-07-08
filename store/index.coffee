@@ -17,12 +17,12 @@ createStore = () =>
 					removeItem: (key) -> Cookies.remove(key)
 			)],
 		mutations:
-			mutateState = (state, payload) ->
+			mutateState: (state, payload) ->
 				for key of payload
 					if state[key]?
 						state[key] = payload[key]
 		actions:
-			setState = (context, payload) ->
+			setState: (context, payload) ->
 				context.commit('mutateState', payload);
 )
 

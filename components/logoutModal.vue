@@ -16,7 +16,7 @@ export default
 		return
 			modalShow: false
 
-	methods: ->
+	methods:
 		submitEvent: (evt) ->
 			evt.preventDefault()
 			await this.$store.dispatch(

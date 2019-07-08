@@ -88,10 +88,10 @@
 				b-input-group
 					b-form-input(
 						v-model='field.value',
-						v-if='isPassword(field)',
+						v-if='hidePasswords && isPassword(field)',
 						type='password'
 					)
-					b-form-input(v-model='field.value', v-else='')
+					b-form-input(v-model='field.value', v-else)
 					b-input-group-append(v-if='field.list')
 						b-form-select#inline-form-custom-select-pref.mb-2.mr-sm-2.mb-sm-0(
 							v-model='field.list_mode',
@@ -107,7 +107,7 @@
 			@ok='createEvent',
 			@cancel='createCancel'
 		)
-			b-alert(v-model='createAlert', variant='danger', dismissible='') {{ this.feedbackMessage }}
+			b-alert(v-model='createAlert', variant='danger', dismissible) {{ this.feedbackMessage }}
 			b-form-group.mb-3(
 				v-for='field in createFields',
 				v-bind:key='field.key',
@@ -119,7 +119,7 @@
 					v-if='isPassword(field)',
 					type='password'
 				)
-				b-form-input(v-model='field.value', v-else='')
+				b-form-input(v-model='field.value', v-else)
 		b-modal(
 			:id='deleteModal.id',
 			:title='deleteModal.title',
@@ -144,10 +144,13 @@
 import { apiReq } from '~/plugins/misc-functions'
 import format from 'date-fns/format'
 import { startCase, camelCase } from 'lodash'
+import webConfig from '~/assets/json/webConfig.json'
 
 export default
 	data: ->
 		return
+			hidePasswords: webConfig.hide_password_fields
+			hiddenFields: webConfig.hidden_fields
 			items: []
 			feedbackMessage: ''
 			editAlert: false
@@ -206,18 +209,18 @@ export default
 			items = await apiReq(this, "#{this.$route.query.model}/get_all")
 
 			if items.status == 'ok'
-				delete_keys = ['_id', 'uid', '__v']
+				this.hiddenFields = ['_id', 'uid', '__v']
 
-				for key in delete_keys
+				for key in this.hiddenFields
 					del_index = this.allKeys.indexOf key
 					if del_index >= 0
 						this.allKeys.splice(this.allKeys.indexOf(key), 1)
 
 				for i in [0...items.response.length] by -1
-					for key in [...this.allKeys, ...delete_keys]
+					for key in [...this.allKeys, ...this.hiddenFields]
 						if this.listKeys.includes key
 							items.response[i][key] = items.response[i][key].toString()
-						if delete_keys.includes key
+						if this.hiddenFields.includes key
 							delete items.response[i][key]
 
 					items.response[i].createdAt = format(items.response[i].createdAt, 'YYYY/MM/DD HH:mm:ss')
@@ -302,7 +305,10 @@ export default
 			for item_key of item
 				for i in [0...modalFields.length]
 					if modalFields[i].key == item_key
-						modalFields[i].value = item[item_key]
+						if !Array.isArray(item[item_key])
+							modalFields[i].value = item[item_key]
+						else
+							modalFields[i].value = item[item_key].join(',')
 
 		titleCase: (string) ->
 			return startCase(camelCase(string))
